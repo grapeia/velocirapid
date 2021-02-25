@@ -227,7 +227,7 @@
       var upTest = (data) => {
         return new Promise((resolve, reject) => {
           var http = new XMLHttpRequest();
-          http.open("POST", "?time=" + getNow());
+          http.open("POST", "/upload?time=" + getNow());
           http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           http.setRequestHeader('Accept', '*/*');
           http.onreadystatechange = () => {
