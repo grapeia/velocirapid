@@ -97,15 +97,17 @@
       size: 5716782,
       url: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/DAP_story_first.gif',
     }];
-    const maxConn = 20;
-    const overheadCompensationFactor = 1.06;
-    const bits = 8;
-    const megaByte = 1048576; //1MB
+    const downStreams = 10;
+    const downTimeUpMax = 10;
+
     const ulTotal = 20; //5 megas
     const ulStreams = 3;
     const ulTimeUpMax = 8;
 
-    var ulCalled = false;
+    const overheadCompensationFactor = 1.03;
+    const bits = 8;
+    const megaByte = 1048576; //1MB
+
     var ping;
 
     function getNow() { return (new Date()).getTime() };
@@ -188,41 +190,53 @@
       return `${speed.toFixed(places[unit])} ${units[unit]}bps`;
     }
 
+    var downCalled = false;
     function downTest(file) {
-      var startTime, count = 0;
+      if (downCalled) return;
+      downCalled = true;
+
+      var startDownload, lastTimeDownload, downloadTotal = 0, stopDownTest, count = 0;
       var images = [];
 
       const url = file.url;
       const contentLenght = file.size;
 
-      const showResultsDown = () => {
-        let duration = (getNow() - startTime) / 1000;
-        let bitsLoaded = contentLenght * bits * count * overheadCompensationFactor;
-        let speedT = speedText(bitsLoaded / duration);
-        ShowProgressMessage("download", "&darr; " + speedT);
-      }
-
-      const downTest = (i) => {
+      const downTest = (i, delay = 0) => {
         setTimeout(() => {
           images[i] = new Image();
           images[i].addEventListener('load', (err, msg) => {
             count++;
-            showResultsDown();
-            if (count == maxConn) {
-              ulTest();
-            }
+            lastTimeDownload = getNow();
+            if (!stopDownTest)
+              downTest(i, 0)
           });
-          images[i].src = `${url}?nnn=${getNow()}${i}`;
-        }, 1 + i * 100);
+          images[i].src = `${url}?nocache=${Math.random()}`;
+        }, 1 + i * delay);
       }
 
-      startTime = getNow();
-      for (var i = 0; i < maxConn; i++) {
-        downTest(i);
+      startDownload = getNow();
+      for (var i = 0; i < downStreams; i++) {
+        downTest(i, 200);
       }
+
+      var interval = setInterval(() => {
+        let duration = (lastTimeDownload - startDownload) / 1000;
+        let bitsLoaded = (contentLenght * count * bits * overheadCompensationFactor);
+        let speedT = (bitsLoaded / duration);
+        if (!isNaN(speedT))
+          ShowProgressMessage("download", "&darr; " + speedText(speedT));
+        if (duration > downTimeUpMax) {
+          stopDownTest = true;
+          clearRequests(images);
+          clearInterval(interval);
+          downCalled = false;
+          ulTest();
+        }
+      }, 200)
 
     }
 
+    var ulCalled = false;
     function ulTest() {
       if (ulCalled) return;
       ulCalled = true;
@@ -248,7 +262,7 @@
         setTimeout(() => {
           var prevLoaded = 0
           let a = new XMLHttpRequest();
-          xhr[i] = a;          
+          xhr[i] = a;
           xhr[i].upload.onprogress = function (event) {
             var loadDiff = event.loaded <= 0 ? 0 : event.loaded - prevLoaded;
             if (isNaN(loadDiff) || !isFinite(loadDiff) || loadDiff < 0) return;
@@ -272,17 +286,18 @@
 
       var startUpload = getNow();
       for (var i = 0; i < 3; i++) {
-        upTest(i, 100);
+        upTest(i, 200);
       }
 
       var interval = setInterval(() => {
         let duration = (getNow() - startUpload) / 1000;
-        let bitsLoaded = (totalUploaded * bits);
+        let bitsLoaded = (totalUploaded * bits * overheadCompensationFactor);
         let speedT = speedText(bitsLoaded / duration);
         ShowProgressMessage("upload", "&uarr; " + speedT);
         if (duration > ulTimeUpMax) {
           clearRequests(xhr);
           clearInterval(interval);
+          ulCalled = false;
         }
       }, 200)
     }
