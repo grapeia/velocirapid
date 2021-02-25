@@ -151,6 +151,8 @@
       Promise.race(promises).then(file => {
         //console.log(file);
         downTest(file);
+        //alert("start");
+        //ulTest();
       }).catch(err => {
         console.log(err)
       })
@@ -236,7 +238,6 @@
       for (var i = 0; i < ulTotal; i++) req.push(r);
       const blob = new Blob(req);
 
-
       const upTest = () => {
         return new Promise((resolve, reject) => {
           var http = new XMLHttpRequest();
@@ -261,9 +262,10 @@
 
       let upInstances = [];
 
-      let streams = Math.floor(speedRef / (ulTotal * megaByte))
+      let streams = Math.floor(speedRef / (ulTotal * megaByte));
+      streams = streams? (streams > 10? 10 : streams) : 1;
 
-      for (var i = 0; i < streams? streams:1; i++) {
+      for (var i = 0; i < streams; i++) {
         upInstances.push(upTest());
       }
 
