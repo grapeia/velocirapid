@@ -265,7 +265,7 @@
       await Promise.all(upInstances);
       let totalTime = (getNow() - startUpload) / 1000;
       console.log(totalTime + "s");
-      let speed = (dataTest.get("filetest").size * bits * ulStreams / totalTime);
+      let speed = (dataTest.get("filetest").size * bits * ulStreams) / totalTime;
       console.log("Upload " + speedText(speed))
       ShowProgressMessage("upload", "&uarr; " + speedText(speed));
       ulCalled = false;
