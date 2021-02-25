@@ -229,7 +229,6 @@
           var http = new XMLHttpRequest();
           http.open("POST", "/upload?time=" + getNow());
           http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          http.setRequestHeader('Accept', '*/*');
           http.onreadystatechange = () => {
             if (http.readyState == 4 && http.status == 200) {
               resolve()
