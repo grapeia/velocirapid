@@ -100,8 +100,9 @@
     const maxConn = 20;
     const overheadCompensationFactor = 1.06;
     const bits = 8;
-    const refBytes = 1048576; //1MB
-    const ulStreams = 5;
+    const megaByte = 1048576; //1MB
+    const ulTotal = 10; //10 megas
+    const ulStreams = 2;
 
     var ulCalled = false;
     var ping;
@@ -224,7 +225,7 @@
       ShowProgressMessage("upload", "Getting dino upload...");
 
 
-      var r = new ArrayBuffer(1048576);
+      var r = new ArrayBuffer(megaByte);
       var maxInt = Math.pow(2, 32) - 1;
       try {
         r = new Uint32Array(r);
@@ -232,7 +233,7 @@
       } catch (e) { }
       var req = [];
       var reqsmall = [];
-      for (var i = 0; i < 20; i++) req.push(r);
+      for (var i = 0; i < ulTotal; i++) req.push(r);
       const blob = new Blob(req);
 
 
@@ -260,7 +261,9 @@
 
       let upInstances = [];
 
-      for (var i = 0; i < ulStreams; i++) {
+      let streams = Math.floor(speedRef / (ulTotal * megaByte))
+
+      for (var i = 0; i < streams; i++) {
         upInstances.push(upTest());
       }
 
@@ -268,7 +271,7 @@
       await Promise.all(upInstances);
       let totalTime = (getNow() - startUpload) / 1000;
       console.log(totalTime + "s");
-      let speed = (blob.size * bits * ulStreams) / totalTime;
+      let speed = (blob.size * bits * streams) / totalTime;
       console.log("Upload " + speedText(speed))
       ShowProgressMessage("upload", "&uarr; " + speedText(speed));
       ulCalled = false;
