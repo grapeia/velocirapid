@@ -101,9 +101,9 @@
     const overheadCompensationFactor = 1.06;
     const bits = 8;
     const megaByte = 1048576; //1MB
-    const ulTotal = 5; //5 megas
-    const ulStreams = 2;
-    const timeUpMax = 10;
+    const ulTotal = 20; //5 megas
+    const ulStreams = 3;
+    const ulTimeUpMax = 8;
 
     var ulCalled = false;
     var ping;
@@ -151,9 +151,9 @@
 
       Promise.race(promises).then(file => {
         //console.log(file);
-        //downTest(file);
+        downTest(file);
         //alert("start");
-        ulTest();
+        //ulTest();
       }).catch(err => {
         console.log(err)
       })
@@ -229,7 +229,7 @@
 
       ShowProgressMessage("upload", "Getting dino upload...");
 
-      var startUpload, totalUploaded;
+      var startUpload, totalUploaded = 0;
 
       var r = new ArrayBuffer(megaByte);
       var maxInt = Math.pow(2, 32) - 1;
@@ -242,19 +242,13 @@
       for (var i = 0; i < ulTotal; i++) req.push(r);
       const blob = new Blob(req);
 
-      const showResultsUp = () => {
-        let duration = (getNow() - startUpload) / 1000;
-        let bitsLoaded = (totalUploaded * bits) / duration;
-        let speedT = speedText(bitsLoaded / duration);
-        ShowProgressMessage("upload", "&uarr; " + speedT);
-      }
-
       var xhr = [];
 
       var upTest = (i, delay = 0) => {
         setTimeout(() => {
           var prevLoaded = 0
-          xhr[i] = new XMLHttpRequest();          
+          let a = new XMLHttpRequest();
+          xhr[i] = a;          
           xhr[i].upload.onprogress = function (event) {
             var loadDiff = event.loaded <= 0 ? 0 : event.loaded - prevLoaded;
             if (isNaN(loadDiff) || !isFinite(loadDiff) || loadDiff < 0) return;
@@ -282,12 +276,13 @@
       }
 
       var interval = setInterval(() => {
-        let duration = new Date().getTime() - startUpload;
-        if ((duration) / 1000.0 > timeUpMax) {
-          console.log("Time ended")
+        let duration = (getNow() - startUpload) / 1000;
+        let bitsLoaded = (totalUploaded * bits);
+        let speedT = speedText(bitsLoaded / duration);
+        ShowProgressMessage("upload", "&uarr; " + speedT);
+        if (duration > ulTimeUpMax) {
           clearRequests(xhr);
           clearInterval(interval);
-          showResultsUp();
         }
       }, 200)
     }
