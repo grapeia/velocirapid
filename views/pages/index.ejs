@@ -101,7 +101,7 @@
     const overheadCompensationFactor = 1.06;
     const bits = 8;
     const megaByte = 1048576; //1MB
-    const ulTotal = 10; //10 megas
+    const ulTotal = 5; //5 megas
     const ulStreams = 2;
 
     var ulCalled = false;
@@ -263,7 +263,7 @@
 
       let streams = Math.floor(speedRef / (ulTotal * megaByte))
 
-      for (var i = 0; i < streams; i++) {
+      for (var i = 0; i < streams? streams:1; i++) {
         upInstances.push(upTest());
       }
 
