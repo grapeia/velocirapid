@@ -224,20 +224,25 @@
       ShowProgressMessage("upload", "Getting dino upload...");
 
       const createDataBlob = (bytes) => {
-        let dataRef = "";
-        for (var i = 0; i < bytes; i++) {
-          dataRef += "k";
-        }
-        let formDataTest = new FormData();
-        formDataTest.append("filetest", new Blob([dataRef], { type: "text/xml" }));
-        return formDataTest;
+        var r = new ArrayBuffer(bytes);
+        var maxInt = Math.pow(2, 32) - 1;
+        try {
+          r = new Uint32Array(r);
+          for (var i = 0; i < r.length; i++) r[i] = Math.random() * maxInt;
+        } catch (e) { }
+        var req = [];
+        var reqsmall = [];
+        for (var i = 0; i < settings.xhr_ul_blob_megabytes; i++) req.push(r);
+        return new Blob(req);
       }
 
       const upTest = (data) => {
         return new Promise((resolve, reject) => {
           var http = new XMLHttpRequest();
-          http.open("POST", "/upload?time=" + getNow());
-          http.setRequestHeader('Accept-Encoding', 'none');
+          http.open("POST", "/upload?nocache=" + Math.random(), true);
+          try {
+            http.setRequestHeader("Content-Encoding", "identity");
+          } catch (e) { }
           http.onreadystatechange = () => {
             if (http.readyState == 4 && http.status == 200) {
               resolve()
@@ -251,7 +256,7 @@
       let startRef = getNow();
       await upTest(dataRef);
       let timeRef = (getNow() - startRef) / 1000;
-      let speedRef = dataRef.get("filetest").size * bits / timeRef;
+      let speedRef = dataRef.size * bits / timeRef;
       console.log("Upload Test for Reference" + speedText(speedRef))
 
       let upInstances = [];
@@ -266,7 +271,7 @@
       await Promise.all(upInstances);
       let totalTime = (getNow() - startUpload) / 1000;
       console.log(totalTime + "s");
-      let speed = (dataTest.get("filetest").size * bits * ulStreams) / totalTime;
+      let speed = (dataTest.size * bits * ulStreams) / totalTime;
       console.log("Upload " + speedText(speed))
       ShowProgressMessage("upload", "&uarr; " + speedText(speed));
       ulCalled = false;
