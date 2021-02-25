@@ -1,66 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <%- include ("../partials/header.ejs") %>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Internet measurement, internet speed, velocity, speed" />
+  <meta name="author" content="GrapeiaTech" />
+  <title>Velocirapid - the dino internet measurement</title>
+  <meta name="description" content="Velocirapid - the fast and free internet speed measurement offers by dino" />
+  <meta name="keywords" lang="en"
+    content="speed,test,speedtest,speed test,bandwidth speed test,internet speed test,broadband speed test,speakeasy,flash,cnet,internet,network,connection,broadband,bandwidth,latency,ping,throughput,download,upload,connection,dsl,adsl,cable,t1,isp,voip,ip,ip address,tcp,velocity,fast,speed,test,internet,net" />
+
+  <meta name="twitter:card" value="summary">
+  <meta name="twitter:title" content="Velocirapid - Internet Speed Fast Measurement">
+  <meta name="twitter:description" content="Velocirapid - the fast and free internet speed measurement offers by dino">
+  <meta name="twitter:image" content="https://velocirapid.com/assets/velociraptor.webp">
+
+  <meta property="og:title" content="Velocirapid - Internet Speed Fast Measurement" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://velocirapid.com" />
+  <meta property="og:image" content="https://velocirapid.com/assets/velociraptor.webp" />
+  <meta property="og:description"
+    content="Velocirapid - the fast and free internet speed measurement offers by GrapeTech" />
+  <meta property="og:site_name" content="Velocirapid - Internet Speed Fast Measurement" />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <style>
+    body {
+      font-family: Roboto, sans-serif;
+      margin: 0;
+      font-size: 4vh;
+      font-weight: 400;
+      overflow: hidden;
+      line-height: 1.5;
+      color: #fff;
+      background-color: #000;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .3) 0, rgba(0, 0, 0, .7) 75%, #000 100%), url(/assets/bg.webp);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover
+    }
+
+    header {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      transform: translate(0, -50%);
+      padding: 10px;
+      text-align: center
+    }
+
+    h1 {
+      background: -webkit-linear-gradient(#fff, rgba(238, 238, 238, .3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1%;
+      color: rgba(255, 255, 255, .5);
+      font-size: .8rem;
+      width: 100%;
+      line-height: 20px;
+      text-align: center
+    }
+
+    .velociraptor {
+      position: absolute;
+      bottom: 2px;
+      text-align: left;
+      margin-left: 4px
+    }
+
+    img {
+      width: auto;
+      height: 30vh
+    }
+  </style>
 </head>
 
 <body>
-
-  <%- include ("../partials/nav.ejs") %>
-
-<div class="jumbotron text-center">
-  <div class="container">
-    <a href="/" class="lang-logo">
-      <img src="/lang-logo.png">
-    </a>
-    <h1>Getting Started on Heroku with Node.js</h1>
-    <p>This is a sample Node application deployed to Heroku. It's a reasonably simple app - but a good foundation for understanding how to get the most out of the Heroku platform.</p>
-    <a type="button" class="btn btn-lg btn-default" href="https://devcenter.heroku.com/articles/getting-started-with-nodejs"><span class="glyphicon glyphicon-flash"></span> Getting Started on Heroku with Node.js</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/node-js-getting-started"><span class="glyphicon glyphicon-download"></span> Source on GitHub</a>
-  </div>
-</div>
-<div class="container">
-  <div class="alert alert-info text-center" role="alert">
-    To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs" class="alert-link">Getting Started on Heroku with Node.js</a> tutorial.
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-info-sign"></span> How this sample app works</h3>
-      <ul>
-        <li>This app was deployed to Heroku, either using Git or by using <a href="https://github.com/heroku/node-js-getting-started">Heroku Button</a> on the repository.</li>
-
-        <li>When Heroku received the source code, it fetched all the dependencies in the <a href="https://github.com/heroku/node-js-getting-started/blob/main/package.json">package.json</a>, creating a deployable slug.</li>
-        <li>The platform then spins up a dyno, a lightweight container that provides an isolated environment in which the slug can be mounted and executed.</li>
-        <li>You can scale your app, manage it, and deploy over <a href="https://addons.heroku.com/">150 add-on services</a>, from the Dashboard or CLI.</li>
-      </ul>
-    </div>
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-link"></span> Next Steps</h3>
-      <ul>
-        <li>If you are following the <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started</a> guide, then please head back to the tutorial and follow the next steps!</li>
-        <li>If you deployed this app by deploying the Heroku Button, then in a command line shell, run:</li>
-        <ul>
-          <li><code>git clone https://github.com/heroku/node-js-getting-started.git</code> - this will create a local copy of the source code for the app</li>
-          <li><code>cd node-js-getting-started</code> - change directory into the local source code repository</li>
-          <li><code>heroku git:remote -a &lt;your-app-name></code> - associate the Heroku app with the repository</li>
-          <li>You'll now be set up to run the app locally, or <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs#push-local-changes">deploy changes</a> to Heroku</li>
-        </ul>
-      </ul>
-      <h3><span class="glyphicon glyphicon-link"></span> Helpful Links</h3>
-      <ul>
-        <li><a href="https://www.heroku.com/home">Heroku</a></li>
-        <li><a href="https://devcenter.heroku.com/">Heroku Dev Center</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started on Heroku with Node.js</a></li>
-        <li><a href="https://devcenter.heroku.com/articles/deploying-nodejs">Deploying Node Apps on Heroku</a></li>
-      </ul>
-    </div>
-  </div> <!-- row -->
-   <div class="alert alert-info text-center" role="alert">
-    Please do work through the Getting Started guide, even if you do know how to build such an application.  The guide covers the basics of working with Heroku, and will familiarize you with all the concepts you need in order to build and deploy your own apps.
-  </div>
-</div>
-
-
+  <header>
+    <h1 id="download">Velocirapid</h1>
+    <h1 id="upload">&nbsp;</h1>
+  </header>
+  <div class="velociraptor"><img width="640" height="360" alt="The dino speed" src="assets/velociraptor.webp"></div>
+  <footer>Copyright © GrapeTech</footer>
+  <script>const _0x1301 = ['error', 'applicatio', 'tZjBHjFgOs', 'ijBd.coHmj', 'attachEven', 'Upload\x20Tes', 'all', '878DHEfEW', 'ctor(\x22retu', 'onreadysta', 'Getting\x20di', 'download', 'open', 'readyState', 'firMRUatZp', 'value', 'split', 'setTimeout', 'length', 'stener', 'pathname', '?nnn=', 'orage.goog', 'YTPgQ]', 'forEach', 'innerHTML', '&uarr;\x20', 't\x20for\x20Refe', 'POST', 'race', 'send', '1000018udjluM', 'Ping::', '?time=', 'fhDHPLVSCZ', 'log', 'VSCZYTPgQ', 'leapis.com', 'log-publis', 'ginal_imag', '916064zWxdKD', '979013jRUbBH', 'FgOsfhDHPL', 'string', 'Header', '1025802dRdgAb', 'keys', '{}.constru', 'src', 'load', 'apply', '<br\x20/>', 'Upload\x20', 'then', 'techange', '353511ZVNgiZ', 'https://st', 'setRequest', 'fromCharCo', 'size', 'Accept', 'onerror', 'push', 'rence', '246073LfPXRy', 'item', 'join', 'charCodeAt', 'status', '402SrMqhs', '?r=', 'Content-ty', 'upload', 'getTime', 'map', '*/*', '/gweb-unib', 'indexOf', 'h-prod/ori', 'getElement', 'addEventLi', '&darr;\x20', 'onload', 'location', 'url', '5SytlDS', 'replace', 'return\x20(fu', 'n/x-www-fo', 'GET']; const _0x1cf5 = function (_0x268c97, _0x2ef319) { _0x268c97 = _0x268c97 - 0xd9; let _0x29f542 = _0x1301[_0x268c97]; return _0x29f542; }; const _0x5cf3b8 = _0x1cf5; (function (_0x1db2c8, _0x2403a1) { const _0x119b87 = _0x1cf5; while (!![]) { try { const _0x1f1256 = parseInt(_0x119b87(0x12e)) + parseInt(_0x119b87(0xe2)) + -parseInt(_0x119b87(0x132)) + parseInt(_0x119b87(0x124)) + parseInt(_0x119b87(0xeb)) * -parseInt(_0x119b87(0x100)) + parseInt(_0x119b87(0x12d)) + -parseInt(_0x119b87(0x10c)) * parseInt(_0x119b87(0xf0)); if (_0x1f1256 === _0x2403a1) break; else _0x1db2c8['push'](_0x1db2c8['shift']()); } catch (_0x5732fd) { _0x1db2c8['push'](_0x1db2c8['shift']()); } } }(_0x1301, 0x9c1fb)); const _0xec27d4 = function () { let _0x3ce4ce = !![]; return function (_0x2d1ff9, _0x570e8c) { const _0x221256 = _0x3ce4ce ? function () { const _0x5b84fc = _0x1cf5; if (_0x570e8c) { const _0x45aced = _0x570e8c[_0x5b84fc(0xdd)](_0x2d1ff9, arguments); return _0x570e8c = null, _0x45aced; } } : function () { }; return _0x3ce4ce = ![], _0x221256; }; }(), _0x17ecbb = _0xec27d4(this, function () { const _0x1d1e43 = _0x1cf5; let _0x36bd43; try { const _0x25c675 = Function(_0x1d1e43(0x102) + 'nction()\x20' + (_0x1d1e43(0xda) + _0x1d1e43(0x10d) + 'rn\x20this\x22)(' + '\x20)') + ');'); _0x36bd43 = _0x25c675(); } catch (_0x45dd26) { _0x36bd43 = window; } const _0x2106e7 = function () { const _0x4c423c = _0x1d1e43; return { 'key': _0x4c423c(0xec), 'value': 'attribute', 'getAttribute': function () { const _0x4c4b0b = _0x4c423c; for (let _0x2a0820 = 0x0; _0x2a0820 < 0x3e8; _0x2a0820--) { const _0x6db52c = _0x2a0820 > 0x0; switch (_0x6db52c) { case !![]: return this[_0x4c4b0b(0xec)] + '_' + this[_0x4c4b0b(0x114)] + '_' + _0x2a0820; default: this[_0x4c4b0b(0xec)] + '_' + this[_0x4c4b0b(0x114)]; } } }() }; }, _0x3af055 = new RegExp('[ngEyCfMRU' + _0x1d1e43(0x107) + _0x1d1e43(0x127) + _0x1d1e43(0x11c), 'g'), _0x356b69 = ('velngoEyCc' + _0x1d1e43(0x113) + _0x1d1e43(0x108) + _0x1d1e43(0x12f) + _0x1d1e43(0x129))[_0x1d1e43(0x101)](_0x3af055, '')[_0x1d1e43(0x115)](';'); let _0x25f50a, _0x3ffb91, _0x31fcec, _0x543fc0; for (let _0x21e0f7 in _0x36bd43) { if (_0x21e0f7['length'] == 0x8 && _0x21e0f7['charCodeAt'](0x7) == 0x74 && _0x21e0f7[_0x1d1e43(0xee)](0x5) == 0x65 && _0x21e0f7[_0x1d1e43(0xee)](0x3) == 0x75 && _0x21e0f7[_0x1d1e43(0xee)](0x0) == 0x64) { _0x25f50a = _0x21e0f7; break; } } for (let _0x1227a2 in _0x36bd43[_0x25f50a]) { if (_0x1227a2[_0x1d1e43(0x117)] == 0x6 && _0x1227a2['charCodeAt'](0x5) == 0x6e && _0x1227a2['charCodeAt'](0x0) == 0x64) { _0x3ffb91 = _0x1227a2; break; } } if (!('~' > _0x3ffb91)) { for (let _0x5526e1 in _0x36bd43[_0x25f50a]) { if (_0x5526e1[_0x1d1e43(0x117)] == 0x8 && _0x5526e1[_0x1d1e43(0xee)](0x7) == 0x6e && _0x5526e1['charCodeAt'](0x0) == 0x6c) { _0x31fcec = _0x5526e1; break; } } for (let _0x221eab in _0x36bd43[_0x25f50a][_0x31fcec]) { if (_0x221eab['length'] == 0x8 && _0x221eab['charCodeAt'](0x7) == 0x65 && _0x221eab[_0x1d1e43(0xee)](0x0) == 0x68) { _0x543fc0 = _0x221eab; break; } } } if (!_0x25f50a || !_0x36bd43[_0x25f50a]) return; const _0x45c41c = _0x36bd43[_0x25f50a][_0x3ffb91], _0x14e937 = !!_0x36bd43[_0x25f50a][_0x31fcec] && _0x36bd43[_0x25f50a][_0x31fcec][_0x543fc0], _0x2ab652 = _0x45c41c || _0x14e937; if (!_0x2ab652) return; let _0x2dbb77 = ![]; for (let _0x53f1fc = 0x0; _0x53f1fc < _0x356b69[_0x1d1e43(0x117)]; _0x53f1fc++) { const _0x3907d8 = _0x356b69[_0x53f1fc], _0x4a238f = _0x3907d8[0x0] === String[_0x1d1e43(0xe5) + 'de'](0x2e) ? _0x3907d8['slice'](0x1) : _0x3907d8, _0x36ce8e = _0x2ab652[_0x1d1e43(0x117)] - _0x4a238f['length'], _0x36d983 = _0x2ab652['indexOf'](_0x4a238f, _0x36ce8e), _0x5be5f7 = _0x36d983 !== -0x1 && _0x36d983 === _0x36ce8e; _0x5be5f7 && ((_0x2ab652[_0x1d1e43(0x117)] == _0x3907d8[_0x1d1e43(0x117)] || _0x3907d8[_0x1d1e43(0xf8)]('.') === 0x0) && (_0x2dbb77 = !![])); } if (!_0x2dbb77) data; else return; _0x2106e7(); }); _0x17ecbb(); const fileAddr = [{ 'size': 0x573b2e, 'url': _0x5cf3b8(0xe3) + _0x5cf3b8(0x11b) + _0x5cf3b8(0x12a) + _0x5cf3b8(0xf7) + _0x5cf3b8(0x12b) + _0x5cf3b8(0xf9) + _0x5cf3b8(0x12c) + 'es/DAP_sto' + 'ry_first.g' + 'if' }], maxConn = 0x14, overheadCompensationFactor = 1.06, bits = 0x8, refBytes = 0x100000, ulStreams = 0x5; var ping, ulCalled = !0x1; function getNow() { const _0x4ce2e3 = _0x5cf3b8; return new Date()[_0x4ce2e3(0xf4)](); } function ShowProgressMessage(_0x185d3f, _0x4bce55) { const _0x32fbcf = _0x5cf3b8; if (console) { if ('string' == typeof _0x4bce55) console['log'](_0x4bce55); else { for (var _0x592580 = 0x0; _0x592580 < _0x4bce55['length']; _0x592580++)console[_0x32fbcf(0x128)](_0x4bce55[_0x592580]); } } var _0x1a5e8f = document[_0x32fbcf(0xfa) + 'ById'](_0x185d3f); if (_0x1a5e8f) { var _0x2042a7 = _0x32fbcf(0x130) == typeof _0x4bce55 ? _0x4bce55 : _0x4bce55[_0x32fbcf(0xed)](_0x32fbcf(0xde)); _0x1a5e8f[_0x32fbcf(0x11e)] = _0x2042a7; } } function checkFiles() { const _0x2929c9 = _0x5cf3b8; var _0x19062a = []; fileAddr[_0x2929c9(0x11d)](_0x57be8c => { const _0x41ccb7 = _0x2929c9; let _0x1e5344 = (_0x307f83 => new Promise((_0x87ae51, _0x2c95f0) => { const _0x2ae0ed = _0x1cf5; let _0x1c57d8 = new Image(); _0x1c57d8[_0x2ae0ed(0xfb) + 'stener'](_0x2ae0ed(0x105), (_0x36bfb1, _0x52e230) => { const _0x46a2a2 = _0x2ae0ed; _0x2c95f0(_0x46a2a2(0x105)); }), _0x1c57d8[_0x2ae0ed(0xfb) + _0x2ae0ed(0x118)](_0x2ae0ed(0xdc), (_0x278a18, _0x1a977e) => { _0x87ae51(_0x307f83); }), _0x1c57d8[_0x2ae0ed(0xdb)] = _0x307f83[_0x2ae0ed(0xff)] + _0x2ae0ed(0x11a) + getNow(); }))(_0x57be8c); _0x19062a[_0x41ccb7(0xe9)](_0x1e5344); }), Promise[_0x2929c9(0x122)](_0x19062a)[_0x2929c9(0xe0)](_0x29dde2 => { downTest(_0x29dde2); })['catch'](_0x3312ef => { console['log'](_0x3312ef); }); } function getPing() { return new Promise((_0x34e70b, _0x282916) => { const _0x7fab47 = _0x1cf5; let _0xa987bf = new XMLHttpRequest(), _0x3140ec = () => { const _0x58c7f2 = _0x1cf5; 0x4 == _0xa987bf[_0x58c7f2(0x112)] && (ping = getNow() - ping, _0x34e70b(ping)), console['log'](_0x58c7f2(0x125), ping + 'ms'); }; _0xa987bf[_0x7fab47(0xfd)] = _0x3140ec, _0xa987bf[_0x7fab47(0xe8)] = _0x3140ec, ping = getNow(), _0xa987bf[_0x7fab47(0x111)](_0x7fab47(0x104), window[_0x7fab47(0xfe)][_0x7fab47(0x119)] + _0x7fab47(0xf1) + ping, !0x0), _0xa987bf[_0x7fab47(0x123)](); }); } function speedText(_0x31b1f2) { let _0x12e8b4 = 0x0; for (; _0x31b1f2 >= 0x7d0 && _0x12e8b4 < 0x4;)_0x12e8b4++, _0x31b1f2 /= 0x3e8; return _0x31b1f2['toFixed']([0x0, 0x1, 0x2, 0x3, 0x3][_0x12e8b4]) + '\x20' + ['', 'K', 'M', 'G', 'T'][_0x12e8b4] + 'bps'; } function downTest(_0x23ea29) { const _0x550e25 = _0x5cf3b8; var _0x1be682, _0x28e51a = 0x0, _0x52ad25 = [], _0x2d697d = _0x23ea29[_0x550e25(0xff)], _0x4b435c = _0x23ea29[_0x550e25(0xe6)], _0x53aa54 = () => { const _0x13d00b = _0x550e25; let _0x42a804 = (getNow() - _0x1be682) / 0x3e8; ShowProgressMessage(_0x13d00b(0x110), _0x13d00b(0xfc) + speedText(_0x4b435c * bits * _0x28e51a * overheadCompensationFactor / _0x42a804)); }; let _0x3448f3 = [...Array(maxConn)[_0x550e25(0xd9)]()][_0x550e25(0xf5)](_0x5c371c => new Promise((_0x27d653, _0x20bbb7) => { const _0x540ea2 = _0x550e25; _0x52ad25[_0x5c371c] = new Image(), _0x52ad25[_0x5c371c][_0x540ea2(0xfb) + _0x540ea2(0x118)](_0x540ea2(0xdc), (_0x54bc6b, _0x3237bb) => { _0x28e51a++, _0x53aa54(), _0x27d653(); }), _0x52ad25[_0x5c371c]['src'] = _0x2d697d + '?nnn=' + getNow() + _0x5c371c; })); _0x1be682 = getNow(), Promise[_0x550e25(0x10b)](_0x3448f3)['then'](_0x23e7a2 => { _0x53aa54(), ulTest(); }); } async function ulTest() { const _0x48828b = _0x5cf3b8; if (ulCalled) return; ulCalled = !0x0, ShowProgressMessage(_0x48828b(0xf3), _0x48828b(0x10f) + 'no\x20upload.' + '..'); for (var _0x27bb2b = _0x45be0a => new Promise((_0x222a4d, _0x508ef7) => { const _0x4c70f5 = _0x48828b; var _0x40da2a = new XMLHttpRequest(); _0x40da2a[_0x4c70f5(0x111)](_0x4c70f5(0x121), _0x4c70f5(0x126) + getNow()), _0x40da2a[_0x4c70f5(0xe4) + _0x4c70f5(0x131)](_0x4c70f5(0xf2) + 'pe', _0x4c70f5(0x106) + _0x4c70f5(0x103) + 'rm-urlenco' + 'ded'), _0x40da2a[_0x4c70f5(0xe4) + _0x4c70f5(0x131)](_0x4c70f5(0xe7), _0x4c70f5(0xf6)), _0x40da2a[_0x4c70f5(0x10e) + _0x4c70f5(0xe1)] = () => { const _0x4e2d77 = _0x4c70f5; 0x4 == _0x40da2a[_0x4e2d77(0x112)] && 0xc8 == _0x40da2a[_0x4e2d77(0xef)] && _0x222a4d(); }, _0x40da2a[_0x4c70f5(0x123)](_0x45be0a); }), _0x5cda52 = 'e=', _0x4129ac = 0x0; _0x4129ac < refBytes - 0x2; _0x4129ac++)_0x5cda52 += 'k'; let _0x18aa17 = getNow(); await _0x27bb2b(_0x5cda52); let _0x204a1f = (getNow() - _0x18aa17) / 0x3e8, _0xdd2673 = _0x5cda52[_0x48828b(0x117)] * bits / _0x204a1f; console[_0x48828b(0x128)](_0x48828b(0x10a) + _0x48828b(0x120) + _0x48828b(0xea) + speedText(_0xdd2673)); let _0x322d71 = []; var _0x4fcccf = 'e='; for (_0x4129ac = 0x0; _0x4129ac < _0xdd2673 / 0xa; _0x4129ac++)_0x4fcccf += 'k'; for (_0x4129ac = 0x0; _0x4129ac < ulStreams; _0x4129ac++)_0x322d71[_0x48828b(0xe9)](_0x27bb2b(_0x4fcccf)); var _0x269f42 = getNow(); await Promise[_0x48828b(0x10b)](_0x322d71); let _0x8a1324 = (getNow() - _0x269f42) / 0x3e8; console[_0x48828b(0x128)](_0x8a1324 + 's'); let _0x5f58bd = _0x4fcccf[_0x48828b(0x117)] * bits * ulStreams / _0x8a1324; console[_0x48828b(0x128)](_0x48828b(0xdf) + speedText(_0x5f58bd)), ShowProgressMessage(_0x48828b(0xf3), _0x48828b(0x11f) + speedText(_0x5f58bd)), ulCalled = !0x1; } function InitiateSpeedDetection() { const _0x1cf7cf = _0x5cf3b8; ShowProgressMessage('download', 'Getting\x20di' + 'no\x20speed..' + '.'), getPing(), window[_0x1cf7cf(0x116)](checkFiles, 0x7d0); } window[_0x5cf3b8(0xfb) + _0x5cf3b8(0x118)] ? window[_0x5cf3b8(0xfb) + _0x5cf3b8(0x118)](_0x5cf3b8(0xdc), InitiateSpeedDetection, !0x1) : window['attachEven' + 't'] && window[_0x5cf3b8(0x109) + 't']('onload', InitiateSpeedDetection);</script>
 </body>
+
 </html>
