@@ -15,6 +15,6 @@ express()
     res.set("Cache-Control", "post-check=0, pre-check=0");
     res.set("Pragma", "no-cache");
 
-    res.status(200).send('Alive');
+    res.sendStatus(200);
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
