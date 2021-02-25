@@ -103,6 +103,7 @@
     const megaByte = 1048576; //1MB
     const ulTotal = 5; //5 megas
     const ulStreams = 2;
+    const timeUpMax = 10;
 
     var ulCalled = false;
     var ping;
@@ -150,9 +151,9 @@
 
       Promise.race(promises).then(file => {
         //console.log(file);
-        downTest(file);
+        //downTest(file);
         //alert("start");
-        //ulTest();
+        ulTest();
       }).catch(err => {
         console.log(err)
       })
@@ -191,41 +192,44 @@
       var startTime, count = 0;
       var images = [];
 
-      var url = file.url;
-      var contentLenght = file.size;
+      const url = file.url;
+      const contentLenght = file.size;
 
-      var showResultsDown = () => {
+      const showResultsDown = () => {
         let duration = (getNow() - startTime) / 1000;
         let bitsLoaded = contentLenght * bits * count * overheadCompensationFactor;
         let speedT = speedText(bitsLoaded / duration);
         ShowProgressMessage("download", "&darr; " + speedT);
       }
 
-      let promis = [...Array(maxConn).keys()].map((i) =>
-        new Promise((resolve, reject) => {
+      const downTest = (i) => {
+        setTimeout(() => {
           images[i] = new Image();
           images[i].addEventListener('load', (err, msg) => {
             count++;
             showResultsDown();
-            resolve();
+            if (count == maxConn) {
+              ulTest();
+            }
           });
           images[i].src = `${url}?nnn=${getNow()}${i}`;
-        })
-      );
+        }, 1 + i * 100);
+      }
 
       startTime = getNow();
-      Promise.all(promis).then(result => {
-        showResultsDown();
-        ulTest();
-      });
+      for (var i = 0; i < maxConn; i++) {
+        downTest(i);
+      }
+
     }
 
-    async function ulTest() {
+    function ulTest() {
       if (ulCalled) return;
       ulCalled = true;
 
       ShowProgressMessage("upload", "Getting dino upload...");
 
+      var startUpload, totalUploaded;
 
       var r = new ArrayBuffer(megaByte);
       var maxInt = Math.pow(2, 32) - 1;
@@ -238,45 +242,78 @@
       for (var i = 0; i < ulTotal; i++) req.push(r);
       const blob = new Blob(req);
 
-      const upTest = () => {
-        return new Promise((resolve, reject) => {
-          var http = new XMLHttpRequest();
-          http.open("POST", "/upload?nocache=" + Math.random(), true);
-          try {
-            http.setRequestHeader("Content-Encoding", "identity");
-          } catch (e) { }
-          http.onreadystatechange = () => {
-            if (http.readyState == 4 && http.status == 200) {
-              resolve()
-            }
-          }
-          http.send(blob);
-        });
+      const showResultsUp = () => {
+        let duration = (getNow() - startUpload) / 1000;
+        let bitsLoaded = (totalUploaded * bits) / duration;
+        let speedT = speedText(bitsLoaded / duration);
+        ShowProgressMessage("upload", "&uarr; " + speedT);
       }
 
-      let startRef = getNow();
-      await upTest();
-      let timeRef = (getNow() - startRef) / 1000;
-      let speedRef = blob.size * bits / timeRef;
-      console.log("Upload Test for Reference" + speedText(speedRef))
+      var xhr = [];
 
-      let upInstances = [];
-
-      let streams = Math.floor(speedRef / (ulTotal * megaByte));
-      streams = streams? (streams > 10? 10 : streams) : 1;
-
-      for (var i = 0; i < streams; i++) {
-        upInstances.push(upTest());
+      var upTest = (i, delay = 0) => {
+        setTimeout(() => {
+          var prevLoaded = 0
+          xhr[i] = new XMLHttpRequest();          
+          xhr[i].upload.onprogress = function (event) {
+            var loadDiff = event.loaded <= 0 ? 0 : event.loaded - prevLoaded;
+            if (isNaN(loadDiff) || !isFinite(loadDiff) || loadDiff < 0) return;
+            totalUploaded += loadDiff;
+            prevLoaded = event.loaded;
+          };
+          xhr[i].upload.onload = function () {
+            upTest(i, 0);
+          };
+          xhr[i].upload.onerror = function () {
+            try {
+              xhr[i].abort();
+            } catch (e) { }
+            delete xhr[i];
+            testStream(i, 0);
+          };
+          xhr[i].open("POST", "upload?nocache=" + Math.random(), true);
+          xhr[i].send(blob);
+        }, 1 + i * delay);
       }
 
       var startUpload = getNow();
-      await Promise.all(upInstances);
-      let totalTime = (getNow() - startUpload) / 1000;
-      console.log(totalTime + "s");
-      let speed = (blob.size * bits * streams) / totalTime;
-      console.log("Upload " + speedText(speed))
-      ShowProgressMessage("upload", "&uarr; " + speedText(speed));
-      ulCalled = false;
+      for (var i = 0; i < 3; i++) {
+        upTest(i, 100);
+      }
+
+      var interval = setInterval(() => {
+        let duration = new Date().getTime() - startUpload;
+        if ((duration) / 1000.0 > timeUpMax) {
+          console.log("Time ended")
+          clearRequests(xhr);
+          clearInterval(interval);
+          showResultsUp();
+        }
+      }, 200)
+    }
+
+    function clearRequests(xhr) {
+      if (xhr) {
+        for (var i = 0; i < xhr.length; i++) {
+          try {
+            xhr[i].onprogress = null;
+            xhr[i].onload = null;
+            xhr[i].onerror = null;
+          } catch (e) { }
+          try {
+            xhr[i].upload.onprogress = null;
+            xhr[i].upload.onload = null;
+            xhr[i].upload.onerror = null;
+          } catch (e) { }
+          try {
+            xhr[i].abort();
+          } catch (e) { }
+          try {
+            delete xhr[i];
+          } catch (e) { }
+        }
+        xhr = null;
+      }
     }
 
     function InitiateSpeedDetection() {
