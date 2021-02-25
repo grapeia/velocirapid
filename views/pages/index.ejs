@@ -224,12 +224,12 @@
       ShowProgressMessage("upload", "Getting dino upload...");
 
       const createDataBlob = (bytes) => {
-        let dataRef = "e=";
-        for (var i = 0; i < bytes - 2; i++) {
+        let dataRef = "";
+        for (var i = 0; i < bytes; i++) {
           dataRef += "k";
         }
         let formDataTest = new FormData();
-        formDataTest.append("webfilestest", new Blob([dataRef], { type: "text/xml" }));
+        formDataTest.append("filetest", new Blob([dataRef], { type: "text/xml" }));
         return formDataTest;
       }
 
@@ -250,7 +250,7 @@
       let startRef = getNow();
       await upTest(dataRef);
       let timeRef = (getNow() - startRef) / 1000;
-      let speedRef = dataRef.length * bits / timeRef;
+      let speedRef = dataRef.get("filetest").size * bits / timeRef;
       console.log("Upload Test for Reference" + speedText(speedRef))
 
       let upInstances = [];
@@ -265,7 +265,7 @@
       await Promise.all(upInstances);
       let totalTime = (getNow() - startUpload) / 1000;
       console.log(totalTime + "s");
-      let speed = (dataTest.length * bits * ulStreams / totalTime);
+      let speed = (dataTest.get("filetest").size * bits * ulStreams / totalTime);
       console.log("Upload " + speedText(speed))
       ShowProgressMessage("upload", "&uarr; " + speedText(speed));
       ulCalled = false;
