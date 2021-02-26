@@ -1,13 +1,42 @@
-const fileAddr = [{
+var fileAddr = [{
     size: 5716782,
     url: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/DAP_story_first.gif',
-}];
-var downStreams = 15;
-const downTimeUpMax = 10;
+}, 
+{
+    size: 4110761,
+    url: 'https://storage.googleapis.com/is-now-illegal.appspot.com/gifs/PUTEIRO.gif',
+},
+{
+    size: 3121128,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/191001_Gem_Jonas-Naimark.gif',
+},
+{
+    size: 4546480,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/180216_Scrolling_Sharon-Harris.gif',
+},
+{
+    size: 12577693,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/191112_Googley-Goop_Brien-Hopkins.gif',
+},
+{
+    size: 12017081,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/191029_interrobang_hopkins.gif',
+},
+{
+    size: 2943262,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/191008_2_ig_first_post_560x560.gif',
+},
+{
+    size: 19956331,
+    url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/190806_Chill_Sharon-Harris.gif',
+},
+];
+var downStreams = 5;
+const downTimeUpMax = 12;
 
 var ulTotal = 20;
-var ulStreams = 5;
-const ulTimeUpMax = 10;
+var ulStreams = 3;
+const ulTimeUpMax = 12;
 
 const overheadCompensationFactor = 1.06;
 const bits = 8;
@@ -20,7 +49,12 @@ if (/Chrome.(\d+)/i.test(agent) && /Android|iPhone|iPad|iPod|Windows Phone/i.tes
     downStreams = 4;
     ulTotal = 5;
     ulStreams = 3;
+    fileAddr = fileAddr.filter(d => d.size < 5000000);
+} else {
+    fileAddr = fileAddr.filter(d => d.size >= 5000000);
 }
+
+fileAddr = fileAddr.sort((a, b) => (a.size < b.size) ? 1 : -1);
 
 function getNow() { return (new Date()).getTime() };
 
@@ -42,13 +76,13 @@ function ShowProgressMessage(type, msg) {
     }
 }
 
-function checkFiles() {
+async function checkFiles() {
 
     let pingTest = (file) => {
         return new Promise((resolve, reject) => {
             let image = new Image();
             image.addEventListener('error', (err, msg) => {
-                reject('error');
+                reject(false);
             });
             image.addEventListener('load', (err, msg) => {
                 resolve(file);
@@ -57,18 +91,12 @@ function checkFiles() {
         });
     }
 
-    var promises = [];
-    fileAddr.forEach(file => {
-        let prom = pingTest(file);
-        promises.push(prom);
-    });
+    var file = false;
+    while (fileAddr.length > 0 && !file) {
+        file = await pingTest(fileAddr.shift())
+    }
+    downTest(file);
 
-    Promise.race(promises).then(file => {
-        downTest(file);
-        getIp();
-    }).catch(err => {
-        console.log(err)
-    })
 }
 
 function getPing() {
@@ -127,10 +155,11 @@ function downTest(file) {
         setTimeout(() => {
             images[i] = new Image();
             images[i].addEventListener('load', (err, msg) => {
-                count++;
-                lastTimeDownload = getNow();
-                if (!stopDownTest)
-                    downTest(i, 0)
+                if (!stopDownTest) {
+                    lastTimeDownload = getNow();
+                    count++;
+                    downTest(i, 0);
+                }                    
             });
             images[i].src = `${url}?nocache=${Math.random()}`;
         }, 1 + i * delay);
@@ -138,7 +167,7 @@ function downTest(file) {
 
     startDownload = getNow();
     for (var i = 0; i < downStreams; i++) {
-        downTest(i, 200);
+        downTest(i, 100);
     }
 
     var interval = setInterval(() => {
@@ -252,6 +281,7 @@ function InitiateSpeedDetection() {
     ShowProgressMessage("download", "Getting dino speed...");
     getPing();
     window.setTimeout(checkFiles, 2000);
+    window.setTimeout(getIp, 1000);
 };
 
 if (window.addEventListener) {
