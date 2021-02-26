@@ -29,6 +29,7 @@ main {
 	transform: translate(0, -50%);
 	padding: 10px;
 	text-align: center;
+	z-index: 10;
 }
 
 h1,
@@ -65,7 +66,7 @@ footer {
 
 .velociraptor {
 	position: absolute;
-	bottom: 2px;
+	bottom: 0px;
 	text-align: left;
 	margin-left: 4px;
 }
@@ -73,4 +74,55 @@ footer {
 img {
 	width: auto;
 	height: 30vh;
+}
+
+.clouds {
+	width: 10000px;
+	height: 60%;
+	background: transparent url("/images/nevoa.webp") repeat-y;
+	position: absolute;
+	left: -50%;
+	bottom: 0px;
+	z-index: 2;
+
+	-moz-animation: move-background 200s linear infinite;
+	-ms-animation: move-background 200s linear infinite;
+	-o-animation: move-background 200s linear infinite;
+	-webkit-animation: move-background 200s linear infinite;
+	animation: move-background 200s linear infinite;
+}
+
+@keyframes move-background {
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to {
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+@-webkit-keyframes move-background {
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to {
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+
+@-moz-keyframes move-background {
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to {
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+
+@-webkit-keyframes move-background {
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to {
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
 }
