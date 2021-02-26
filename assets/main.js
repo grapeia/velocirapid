@@ -31,8 +31,7 @@ var fileAddr = [{
     url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/190806_Chill_Sharon-Harris.gif',
 },
 ];
-var downStreams = 3;
-const downTimeUpMax = 12;
+var downStreamsMax = 10;
 
 var ulTotal = 20;
 var ulStreams = 3;
@@ -46,7 +45,7 @@ var ping;
 
 var agent = navigator.userAgent;
 if (/Chrome.(\d+)/i.test(agent) && /Android|iPhone|iPad|iPod|Windows Phone/i.test(agent)) {
-    downStreams = 4;
+    downStreamsMax = 5;
     ulTotal = 5;
     ulStreams = 3;
     fileAddr = fileAddr.filter(d => d.size < 5000000);
@@ -140,55 +139,37 @@ function speedText(speed) {
     return `${speed.toFixed(places[unit])} ${units[unit]}bps`;
 }
 
-var downCalled = false;
 function downTest(file) {
-    if (downCalled) return;
-    downCalled = true;
-
-    var startDownload, lastTimeDownload, downloadTotal = 0, stopDownTest, count = 0;
+    var startTime, count = 0;
     var images = [];
 
-    const url = file.url;
-    const contentLenght = file.size;
+    var url = file.url;
+    var contentLenght = file.size;
 
-
-    const updateInfo = () => {
-        let duration = (lastTimeDownload - startDownload) / 1000;
-        let bitsLoaded = (contentLenght * count * bits * overheadCompensationFactor);
-        let speedT = (bitsLoaded / duration);
-        if (!isNaN(speedT))
-            ShowProgressMessage("download", "&darr; " + speedText(speedT));
-
-        if (!images.find(d => !d.complete) && stopDownTest) {
-            downCalled = false;
-            ulTest();
-        }
+    var showResultsDown = () => {
+        let duration = (getNow() - startTime) / 1000;
+        let bitsLoaded = contentLenght * bits * count * overheadCompensationFactor;
+        let speedT = speedText(bitsLoaded / duration);
+        ShowProgressMessage("download", "&darr; " + speedT);
     }
 
-    const downTest = (i, delay = 0) => {
-        setTimeout(() => {
+    let promis = [...Array(downStreamsMax).keys()].map((i) =>
+        new Promise((resolve, reject) => {
             images[i] = new Image();
-            images[i].addEventListener('load', (err, msg) => {
-                lastTimeDownload = getNow() - 1;
+            images[i].addEventListener('load', () => {
                 count++;
-                updateInfo();
-                if (!stopDownTest) {
-                    downTest(i, 0);
-                }
+                showResultsDown();
+                resolve();
             });
-            images[i].src = `${url}?nocache=${Math.random()}`;
-        }, 1 + i * delay);
-    }
+            images[i].src = `${url}?nnn=${getNow()}${i}`;
+        })
+    );
 
-    startDownload = getNow();
-    for (var i = 0; i < downStreams; i++) {
-        downTest(i, 300);
-    }
-
-    setTimeout(() => {
-        stopDownTest = true;
-    }, downTimeUpMax * 1000);
-
+    startTime = getNow();
+    Promise.all(promis).then(result => {
+        showResultsDown();
+        ulTest();
+    });
 }
 
 var ulCalled = false;
