@@ -9,7 +9,7 @@ const Geo = require('@maxmind/geoip2-node').Reader;
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
-const htmlFile = fs.readFileSync('views/index.ejs', 'utf8').toString();
+const htmlFile = fs.readFileSync('views/index.ejs', 'utf8');
 
 const js = javaScriptObfuscator.obfuscate(jsCode, {
   splitStrings: true,
@@ -22,11 +22,11 @@ const html = ejs.render(htmlFile, {
   css: css
 });
 
-const minifyHTML = minify(html, {
+const minifyHTML = process.env.NODE_ENV == "PROD"? minify(html, {
   minifyCSS: true,
   minifyJS: true,
   minifyURLs: true
-});
+}) : false;
 
 
 const getIps = async (req, res) => {
@@ -94,7 +94,7 @@ const getIps = async (req, res) => {
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .get('/', (req, res) => {
-    res.status(200).send(minifyHTML);
+    res.status(200).send(minifyHTML || html);
   })
   .post('/upload', (req, res) => {
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");

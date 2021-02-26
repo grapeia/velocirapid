@@ -58,6 +58,7 @@ function checkFiles() {
 
     Promise.race(promises).then(file => {
         downTest(file);
+        getIp();
     }).catch(err => {
         console.log(err)
     })
@@ -79,6 +80,18 @@ function getPing() {
         ping = getNow();
         pingf.send();
     })
+}
+
+function getIp() {
+    let reqIP = new XMLHttpRequest();
+    reqIP.onreadystatechange = () => {
+        if (reqIP.readyState == 4 && reqIP.status == 200) {
+            ShowProgressMessage("ip", reqIP.responseText);
+        }
+    }
+    reqIP.open("GET", window.location.pathname + "getip", true);
+    reqIP.send();
+
 }
 
 function speedText(speed) {

@@ -1,10 +1,9 @@
 body {
 	font-family: Roboto, sans-serif;
 	margin: 0;
-	font-size: 4vh;
+	font-size: 5vh;
 	font-weight: 400;
 	overflow: hidden;
-	line-height: 1.5;
 	color: #fff;
 	background-color: #000;
 	background: linear-gradient(
@@ -23,20 +22,36 @@ body {
 	-o-background-size: cover;
 }
 
-header {
+main {
 	position: absolute;
-	top: 40%;
+	top: 35%;
 	width: 100%;
 	transform: translate(0, -50%);
 	padding: 10px;
 	text-align: center;
 }
 
-h1 {
+h1,
+h2,
+h3 {
 	background: -webkit-linear-gradient(#fff, rgba(238, 238, 238, 0.3));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
+}
+
+h1 {
+	font-size: 2vh;
+}
+
+h2 {
+	font-size: 2vh;
+	line-height: 2.5vh;
+}
+
+h3 {
+	font-size: 5vh;
+	line-height: 6vh;
 }
 
 footer {
@@ -45,7 +60,6 @@ footer {
 	color: rgba(255, 255, 255, 0.5);
 	font-size: 0.8rem;
 	width: 100%;
-	line-height: 20px;
 	text-align: center;
 }
 
