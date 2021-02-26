@@ -5,7 +5,7 @@ const fileAddr = [{
 const downStreams = 10;
 const downTimeUpMax = 10;
 
-const ulTotal = 20; //5 megas
+const ulTotal = 20;
 const ulStreams = 3;
 const ulTimeUpMax = 8;
 

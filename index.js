@@ -14,7 +14,7 @@ const htmlFile = fs.readFileSync('views/index.ejs', 'utf8');
 const js = javaScriptObfuscator.obfuscate(jsCode, {
   splitStrings: true,
   stringArrayEncoding: ["base64"],
-  domainLock: ["velocirapid.com", "localhost", "velocirapid.herokuapp.com"]
+  domainLock: ["http://www.velocirapid.com/", "velocirapid.com", "localhost", "velocirapid.herokuapp.com"]
 }).getObfuscatedCode();
 
 const html = ejs.render(htmlFile, {
