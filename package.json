@@ -11,8 +11,11 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "@maxmind/geoip2-node": "^2.2.0",
     "ejs": "^3.1.5",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "html-minifier": "^4.0.0",
+    "javascript-obfuscator": "^2.10.4"
   },
   "devDependencies": {
     "got": "^11.3.0",
