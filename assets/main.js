@@ -31,7 +31,7 @@ var fileAddr = [{
     url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/190806_Chill_Sharon-Harris.gif',
 },
 ];
-var downStreams = 6;
+var downStreams = 3;
 const downTimeUpMax = 12;
 
 var ulTotal = 20;
