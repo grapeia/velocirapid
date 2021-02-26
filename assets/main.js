@@ -1,7 +1,7 @@
 var fileAddr = [{
     size: 5716782,
     url: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/DAP_story_first.gif',
-}, 
+},
 {
     size: 4110761,
     url: 'https://storage.googleapis.com/is-now-illegal.appspot.com/gifs/PUTEIRO.gif',
@@ -31,7 +31,7 @@ var fileAddr = [{
     url: 'https://storage.googleapis.com/gd-newsletter/weekly-newsletter-assets/190806_Chill_Sharon-Harris.gif',
 },
 ];
-var downStreams = 5;
+var downStreams = 6;
 const downTimeUpMax = 12;
 
 var ulTotal = 20;
@@ -151,15 +151,30 @@ function downTest(file) {
     const url = file.url;
     const contentLenght = file.size;
 
+
+    const updateInfo = () => {
+        let duration = (lastTimeDownload - startDownload) / 1000;
+        let bitsLoaded = (contentLenght * count * bits * overheadCompensationFactor);
+        let speedT = (bitsLoaded / duration);
+        if (!isNaN(speedT))
+            ShowProgressMessage("download", "&darr; " + speedText(speedT));
+
+        if (!images.find(d => !d.complete) && stopDownTest) {
+            downCalled = false;
+            ulTest();
+        }
+    }
+
     const downTest = (i, delay = 0) => {
         setTimeout(() => {
             images[i] = new Image();
             images[i].addEventListener('load', (err, msg) => {
+                lastTimeDownload = getNow() - 1;
+                count++;
+                updateInfo();
                 if (!stopDownTest) {
-                    lastTimeDownload = getNow();
-                    count++;
                     downTest(i, 0);
-                }                    
+                }
             });
             images[i].src = `${url}?nocache=${Math.random()}`;
         }, 1 + i * delay);
@@ -167,23 +182,12 @@ function downTest(file) {
 
     startDownload = getNow();
     for (var i = 0; i < downStreams; i++) {
-        downTest(i, 100);
+        downTest(i, 300);
     }
 
-    var interval = setInterval(() => {
-        let duration = (lastTimeDownload - startDownload) / 1000;
-        let bitsLoaded = (contentLenght * count * bits * overheadCompensationFactor);
-        let speedT = (bitsLoaded / duration);
-        if (!isNaN(speedT))
-            ShowProgressMessage("download", "&darr; " + speedText(speedT));
-        if (duration > downTimeUpMax) {
-            stopDownTest = true;
-            clearRequests(images);
-            clearInterval(interval);
-            downCalled = false;
-            ulTest();
-        }
-    }, 200)
+    setTimeout(() => {
+        stopDownTest = true;
+    }, downTimeUpMax * 1000);
 
 }
 
