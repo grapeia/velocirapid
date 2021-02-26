@@ -5,7 +5,7 @@ const fileAddr = [{
 var downStreams = 15;
 const downTimeUpMax = 10;
 
-var ulTotal = 20;
+var lTotal = 20;
 var ulStreams = 5;
 const ulTimeUpMax = 10;
 
@@ -15,7 +15,8 @@ const megaByte = 1048576; //1MB
 
 var ping;
 
-if (/Chrome.(\d+)/i.test(ua) && /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua)) {
+var agent = navigator.userAgent;
+if (/Chrome.(\d+)/i.test(agent) && /Android|iPhone|iPad|iPod|Windows Phone/i.test(agent)) {
     downStreams = 4;
     ulTotal = 5;
     ulStreams = 3;
