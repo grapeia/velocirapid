@@ -6,6 +6,7 @@ const ejs = require('ejs');
 const minify = require('html-minifier').minify;
 const javaScriptObfuscator = require('javascript-obfuscator');
 const Geo = require('@maxmind/geoip2-node').Reader;
+const cors = require('cors');
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
@@ -92,6 +93,9 @@ const getIps = async (req, res) => {
 }
 
 express()
+  .use(cors({
+    origin: 'velocirapid.com'
+  }))
   .use(express.static(path.join(__dirname, 'public')))
   .get('/', (req, res) => {
     res.status(200).send(minifyHTML || html);
