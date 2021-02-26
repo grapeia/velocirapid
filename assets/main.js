@@ -2,18 +2,24 @@ const fileAddr = [{
     size: 5716782,
     url: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/DAP_story_first.gif',
 }];
-const downStreams = 10;
+var downStreams = 15;
 const downTimeUpMax = 10;
 
-const ulTotal = 20;
-const ulStreams = 3;
-const ulTimeUpMax = 8;
+var ulTotal = 20;
+var ulStreams = 5;
+const ulTimeUpMax = 10;
 
-const overheadCompensationFactor = 1.03;
+const overheadCompensationFactor = 1.06;
 const bits = 8;
 const megaByte = 1048576; //1MB
 
 var ping;
+
+if (/Chrome.(\d+)/i.test(ua) && /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua)) {
+    downStreams = 4;
+    ulTotal = 5;
+    ulStreams = 3;
+}
 
 function getNow() { return (new Date()).getTime() };
 
