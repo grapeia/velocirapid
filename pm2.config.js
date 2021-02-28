@@ -2,7 +2,7 @@ module.exports = {
     apps: [{
         name: "velocirapid",
         script: "./index.js",
-        watch: true,
+        watch: false,
         env: {
             "NODE_ENV": "DEV",
         },
