@@ -1,63 +1,71 @@
+require('dotenv').config();
 const express = require('express');
-const path = require('path');
-const PORT = process.env.PORT || 5000
 const fs = require('fs');
+const path = require('path');
 const ejs = require('ejs');
 const minify = require('html-minifier').minify;
-const javaScriptObfuscator = require('javascript-obfuscator');
+const jsObfuscate = require('javascript-obfuscator');
 const Geo = require('@maxmind/geoip2-node').Reader;
 const cors = require('cors');
+
+const PORT = process.env.PORT || 5000
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
 const htmlFile = fs.readFileSync('views/index.ejs', 'utf8');
 
-const js = javaScriptObfuscator.obfuscate(jsCode, {
+const asnBuffer = fs.readFileSync(path.join(__dirname, '/bd/GeoLite2-ASN.mmdb'));
+const asnReader = Geo.openBuffer(asnBuffer);
+const cityBuffer = fs.readFileSync(path.join(__dirname, '/bd/GeoLite2-City.mmdb'));
+const cityReader = Geo.openBuffer(cityBuffer);
+
+const js = process.env.NODE_ENV == "PROD" ? jsObfuscate.obfuscate(jsCode, {
   splitStrings: true,
   stringArrayEncoding: ["base64"],
   domainLock: ["http://www.velocirapid.com/", "velocirapid.com", "localhost", "velocirapid.herokuapp.com"]
-}).getObfuscatedCode();
+}).getObfuscatedCode() : false;
 
 const html = ejs.render(htmlFile, {
-  js: js,
+  js: js || jsCode,
   css: css
 });
 
-const minifyHTML = process.env.NODE_ENV == "PROD"? minify(html, {
+const minifyHTML = process.env.NODE_ENV == "PROD" ? minify(html, {
   minifyCSS: true,
   minifyJS: true,
   minifyURLs: true
 }) : false;
 
 
-const getIps = async (req, res) => {
+const getIps = (req, res) => {
 
-  const geoHelper = async (ip) => {
+  const geoHelper = (ip) => {
 
     var data = {};
 
-    await Geo.open(path.join(__dirname, '/bd/GeoLite2-ASN.mmdb')).then(reader => {
-      const res = reader.asn(ip);
-      if (res && res.autonomousSystemOrganization)
-        data.isp = res.autonomousSystemOrganization;
-    }).catch(function (err) {
-      //console.log(err)
-    });
-
-    await Geo.open(path.join(__dirname, '/bd/GeoLite2-City.mmdb')).then(reader => {
-      const res = reader.city(ip);
-      if (res) {
-
-        if (res.city && res.city.names && res.city.names.en)
-          data.city = res.city.names.en;
-
-        if (res.registeredCountry && res.registeredCountry.isoCode)
-          data.country = res.registeredCountry.isoCode
+    try {
+      const resasn = asnReader.asn(ip);
+      if (resasn && resasn.autonomousSystemOrganization) {
+        data.isp = resasn.autonomousSystemOrganization;
       }
-    }).catch(function (err) {
-      console.log(err)
-    });
+    } catch (error) {
+      //console.log(error)
+    }
 
+    try {
+      const rescity = cityReader.city(ip);
+      if (rescity) {
+
+        if (rescity.city && rescity.city.names && rescity.city.names.en)
+          data.city = rescity.city.names.en;
+
+        if (rescity.registeredCountry && rescity.registeredCountry.isoCode)
+          data.country = rescity.registeredCountry.isoCode
+      }
+    } catch (error) {
+      //console.log(error)
+    }
+    
     return data;
   }
 
@@ -67,28 +75,27 @@ const getIps = async (req, res) => {
     req.headers['X-Real-IP'] ||
     req.headers['HTTP_X_FORWARDED_FOR'];
 
-  if (ip.substr(0, 7) == "::ffff:")
-    ip = ip.substr(7)
+  ip = ip.replace("::ffff:","");
 
   let result = "IP and Geolocation / ISP not found or recognized.";
 
   if (ip && ip == "::1") {
-    result = "Localhost in somewhere in the world"
+    result = "Localhost in somewhere at the world"
   } else if (ip) {
     result = `IP: ${ip}`;
 
-    let json = false;
+    let dataInfo = false;
     try {
-      json = await geoHelper(ip);
+      dataInfo = geoHelper(ip);
     } catch (error) {
-      json = false;
+      dataInfo = false;
     }
 
-    if (json && (json.isp || json.city || json.country)) {
-      result += ` - ${json.isp || "ISP not found"}, ${json.city || "City not found"} / ${json.country === "BR" ? "Brasil" : "Brasil"}`;
+    if (dataInfo && (dataInfo.isp || dataInfo.city || dataInfo.country)) {
+      result += ` - ${dataInfo.isp || "ISP not found"}, ${dataInfo.city || "City not found"} / ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}`;
     }
   }
-  
+
   res.status(200).send(result);
 }
 
