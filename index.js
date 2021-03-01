@@ -90,15 +90,21 @@ const getIps = (req, res) => {
   } else if (ip) {
     result = `IP: ${ip}`;
 
+    if (ip.lenght > 15) {
+      result +="<br/>";
+    }
+
     let dataInfo = false;
     try {
       dataInfo = geoHelper(ip);
     } catch (error) {
       dataInfo = false;
-    }
+    }   
 
     if (dataInfo && (dataInfo.isp || dataInfo.city || dataInfo.country)) {
-      result += ` - ${dataInfo.isp || "ISP not found"}, ${dataInfo.city || "City not found"} / ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}`;
+      result += dataInfo.isp ? ` ${dataInfo.isp},` : "";
+      result += dataInfo.city ? ` ${dataInfo.city},` : "";
+      result += dataInfo.country? ` ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}` : "";
     }
   }
 
@@ -142,7 +148,7 @@ try {
   const httpServer = http.createServer(app).listen(HTTP_PORT, () => {
     console.log(`Listening on ${HTTP_PORT} redirect to ${HTTPS_PORT}`);
   });
-  const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT, function() {
+  const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT, function () {
     console.log(`Listening on ${HTTPS_PORT}`);
     alert.sendAlert(`Server started!`);
   });
