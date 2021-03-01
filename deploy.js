@@ -14,7 +14,7 @@ http.createServer(function (req, res) {
 
         if (req.headers['x-hub-signature'] == sig) {
             console.log(`Deploying...`);
-            let comm = `cd ${__dirname} && git reset --hard HEAD && git pull && npm install && pm2 restart all`;
+            let comm = `cd ${__dirname} && git reset --hard HEAD && git pull && npm install && pm2 reload pm2.config.js`;
             console.log(comm);
             exec(comm);
             alert.sendAlert(`Deployed succesfully!`);
