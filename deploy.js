@@ -12,7 +12,10 @@ http.createServer(function (req, res) {
         let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
 
         if (req.headers['x-hub-signature'] == sig) {
-            exec('cd ' + __dirname + ' && git pull && pm2 restart all');
+            console.log(`Deploying...`);
+            let comm = `cd ${__dirname} && git pull && pm2 restart all`;
+            console.log(comm);
+            exec(comm);
         }
     });
 
