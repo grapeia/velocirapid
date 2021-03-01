@@ -41,8 +41,8 @@ const isMobile = (() => {
 
 const downStreamsMax = isMobile? 5:10;
 
-var ulTotal = isMobile ? 5 : 20;
-var ulStreams = 3;
+const ulTotal = isMobile ? 5 : 20;
+const ulStreams = 3;
 const ulTimeUpMax = 12;
 
 const overheadCompensationFactor = 1.06;
