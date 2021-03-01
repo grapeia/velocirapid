@@ -14,6 +14,7 @@ const alert = require('./alert');
 const HTTP_PORT = process.env.HTTP_PORT || 8080
 const HTTPS_PORT = process.env.HTTPS_PORT || 4443
 const URL = process.env.URL || "localhost"
+const ENV = process.env.NODE_ENV != "local"
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
@@ -24,7 +25,7 @@ const asnReader = Geo.openBuffer(asnBuffer);
 const cityBuffer = fs.readFileSync(path.join(__dirname, '/bd/GeoLite2-City.mmdb'));
 const cityReader = Geo.openBuffer(cityBuffer);
 
-const js = process.env.NODE_ENV == "PROD" ? jsObfuscate.obfuscate(jsCode, {
+const js = ENV ? jsObfuscate.obfuscate(jsCode, {
   splitStrings: true,
   stringArrayEncoding: ["base64"],
   domainLock: ["http://www.velocirapid.com/", "velocirapid.com", "localhost", "velocirapid.herokuapp.com"]
@@ -35,7 +36,7 @@ const html = ejs.render(htmlFile, {
   css: css
 });
 
-const minifyHTML = process.env.NODE_ENV == "PROD" ? minify(html, {
+const minifyHTML = ENV ? minify(html, {
   minifyCSS: true,
   minifyJS: true,
   minifyURLs: true
