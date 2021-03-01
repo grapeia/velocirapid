@@ -102,14 +102,10 @@ const getIps = (req, res) => {
   res.status(200).send(result);
 }
 
-const { key, cert } = await(async () => {
-  const certdir = (fs.readdirSync("/etc/letsencrypt/live"))[0];
 
-  return {
-    key: fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
-    cert: fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
-  }
-})();
+const certdir = (fs.readdirSync("/etc/letsencrypt/live"))[0];
+const key = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
+const cert = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
 
 const app = express();
 
@@ -140,6 +136,6 @@ app.get('*', (req, res) => {
 
 const httpServer = http.createServer(app).listen(HTTP_PORT);
 const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT)
-  
 
-  
+
+
