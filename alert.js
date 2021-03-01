@@ -7,7 +7,9 @@ var alertService = {
         request({
             url: webhook,
             method: 'POST',
-            json: message
+            json: {
+                'text': message,
+            }
         }, (error, response, body) => {
             if (error) {
                 console.log('Error sending message: ', error)

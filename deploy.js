@@ -2,7 +2,7 @@ require('dotenv').config();
 const http = require('http');
 const crypto = require('crypto');
 const exec = require('child_process').exec;
-const alert = require('./alert')
+const alert = require('./alert');
 
 const secret = process.env.DEPLOY_SECRET;
 const port = process.env.DEPLOY_PORT;
