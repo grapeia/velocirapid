@@ -97,7 +97,7 @@ img {
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 	to {
-		-webkit-transform: translate3d(10000px, 0px, 0px);
+		-webkit-transform: translate3d(1000px, 0px, 0px);
 	}
 }
 @-webkit-keyframes move-background {
@@ -105,7 +105,7 @@ img {
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 	to {
-		-webkit-transform: translate3d(10000px, 0px, 0px);
+		-webkit-transform: translate3d(1000px, 0px, 0px);
 	}
 }
 
@@ -114,7 +114,7 @@ img {
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 	to {
-		-webkit-transform: translate3d(10000px, 0px, 0px);
+		-webkit-transform: translate3d(1000px, 0px, 0px);
 	}
 }
 
@@ -123,6 +123,6 @@ img {
 		-webkit-transform: translate3d(0px, 0px, 0px);
 	}
 	to {
-		-webkit-transform: translate3d(10000px, 0px, 0px);
+		-webkit-transform: translate3d(1000px, 0px, 0px);
 	}
 }
