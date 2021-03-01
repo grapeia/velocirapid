@@ -104,8 +104,8 @@ const getIps = (req, res) => {
 
 
 const certdir = (fs.readdirSync("/etc/letsencrypt/live"))[0];
-const key = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
-const cert = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+const key = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`);
+const cert = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`);
 
 const app = express();
 
