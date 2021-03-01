@@ -45,7 +45,7 @@ var ping;
 
 var agent = navigator.userAgent;
 if (/Chrome.(\d+)/i.test(agent) && /Android|iPhone|iPad|iPod|Windows Phone/i.test(agent)) {
-    downStreamsMax = 5;
+    downStreamsMax = 3;
     ulTotal = 5;
     ulStreams = 3;
     fileAddr = fileAddr.filter(d => d.size < 5000000);

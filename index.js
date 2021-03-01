@@ -90,9 +90,8 @@ const getIps = (req, res) => {
   } else if (ip) {
     result = `IP: ${ip}`;
 
-    result += ip.lenght > 15? "<br/>" : " - ";
-
-
+    result += ip.length > 15? "<br/>" : " - ";
+    
     let dataInfo = false;
     try {
       dataInfo = geoHelper(ip);
