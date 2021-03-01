@@ -176,7 +176,7 @@ function ulTest() {
     if (ulCalled) return;
     ulCalled = true;
 
-    ShowProgressMessage("upload", "Getting upload...");
+    ShowProgressMessage("upload", "Getting speed upload...");
 
     var startUpload, totalUploaded = 0;
 
@@ -262,7 +262,7 @@ function clearRequests(xhr) {
 }
 
 function InitiateSpeedDetection() {
-    ShowProgressMessage("download", "Getting speed...");
+    ShowProgressMessage("download", "Getting speed download...");
     getPing();
     window.setTimeout(checkFiles, 2000);
     window.setTimeout(getIp, 1000);
