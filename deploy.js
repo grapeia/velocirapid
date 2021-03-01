@@ -2,6 +2,7 @@ require('dotenv').config();
 const http = require('http');
 const crypto = require('crypto');
 const exec = require('child_process').exec;
+const alert = require('./alert')
 
 const secret = process.env.DEPLOY_SECRET;
 const port = process.env.DEPLOY_PORT;
@@ -16,6 +17,7 @@ http.createServer(function (req, res) {
             let comm = `cd ${__dirname} && git pull && pm2 restart all`;
             console.log(comm);
             exec(comm);
+            alert.sendAlert(`Deployed succesfully!`);
         }
     });
 

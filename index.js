@@ -9,6 +9,7 @@ const Geo = require('@maxmind/geoip2-node').Reader;
 const cors = require('cors');
 const http = require('http');
 const https = require('https');
+const alert = require('./alert');
 
 const HTTP_PORT = process.env.HTTP_PORT || 8080
 const HTTPS_PORT = process.env.HTTPS_PORT || 4443
@@ -101,6 +102,7 @@ const getIps = (req, res) => {
   }
 
   console.log(result);
+  alert.sendAlert(`New measurement: ${result}`);
 
   res.status(200).send(result);
 }
