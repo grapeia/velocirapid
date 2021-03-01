@@ -11,7 +11,8 @@ const http = require('http');
 const https = require('https');
 
 const HTTP_PORT = process.env.HTTP_PORT || 8080
-const HTTPS_PORT = process.env.HTTHTTPS_PORT || 4443
+const HTTPS_PORT = process.env.HTTPS_PORT || 4443
+const URL = process.env.URL || "localhost"
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
@@ -102,15 +103,13 @@ const getIps = (req, res) => {
   res.status(200).send(result);
 }
 
-
-const certdir = (fs.readdirSync("/etc/letsencrypt/live"))[0];
-const key = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`);
-const cert = fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`);
+const key = fs.readFileSync(`/etc/letsencrypt/live/${URL}/privkey.pem`);
+const cert = fs.readFileSync(`/etc/letsencrypt/live/${URL}/fullchain.pem`);
 
 const app = express();
 
 app.use(cors({
-  origin: 'velocirapid.com'
+  origin: URL
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -135,7 +134,7 @@ app.get('*', (req, res) => {
 });
 
 const httpServer = http.createServer(app).listen(HTTP_PORT);
-const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT)
+const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT);
 
 
 
