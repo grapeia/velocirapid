@@ -79,7 +79,7 @@ img {
 .clouds {
 	width: 10000px;
 	height: 60%;
-	background: transparent url("/images/nevoa.webp") repeat-y;
+	background: transparent url("/images/fog.webp") repeat-y;
 	position: absolute;
 	left: -50%;
 	bottom: 0px;
