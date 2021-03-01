@@ -17,4 +17,6 @@ http.createServer(function (req, res) {
     });
 
     res.end();
-}).listen(port);
+}).listen(port, () => {
+    console.log(`Deploy ready on ${port} port`)
+});

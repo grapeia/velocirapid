@@ -133,8 +133,19 @@ app.get('*', (req, res) => {
   res.redirect('https://' + req.headers.host + req.url);
 });
 
-const httpServer = http.createServer(app).listen(HTTP_PORT);
-const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT);
+try {
+  const httpServer = http.createServer(app).listen(HTTP_PORT, () => {
+    console.log(`Listening on ${HTTP_PORT} redirect to ${HTTPS_PORT}`);
+  });
+  const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT, function() {
+    console.log(`Listening on ${HTTPS_PORT}`);
+  });
+} catch (error) {
+  console.log(error);
+}
+
+
+
 
 
 
