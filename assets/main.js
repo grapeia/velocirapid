@@ -39,7 +39,7 @@ const isMobile = (() => {
 })();
 
 
-const downStreamsMax = isMobile? 5:10;
+const downStreamsMax = isMobile ? 5 : 10;
 
 const ulTotal = isMobile ? 5 : 20;
 const ulStreams = 3;
@@ -178,7 +178,7 @@ function ulTest() {
 
     ShowProgressMessage("upload", "Getting upload speed...");
 
-    var startUpload, totalUploaded = 0;
+    var startUpload, stopTest = false, totalUploaded = 0;
 
     var r = new ArrayBuffer(megaByte);
     var maxInt = Math.pow(2, 32) - 1;
@@ -205,14 +205,16 @@ function ulTest() {
                 prevLoaded = event.loaded;
             };
             xhr[i].upload.onload = function () {
-                upTest(i, 0);
+                if (!stopTest)
+                    upTest(i, 0);
             };
             xhr[i].upload.onerror = function () {
                 try {
                     xhr[i].abort();
                 } catch (e) { }
                 delete xhr[i];
-                upTest(i, 0);
+                if (!stopTest)
+                    upTest(i, 0);
             };
             xhr[i].open("POST", "upload?nocache=" + Math.random(), true);
             xhr[i].send(blob);
@@ -230,6 +232,7 @@ function ulTest() {
         let speedT = speedText(bitsLoaded / duration);
         ShowProgressMessage("upload", "&uarr; " + speedT);
         if (duration > ulTimeUpMax) {
+            stopTest = true;
             clearRequests(xhr);
             clearInterval(interval);
             ulCalled = false;
