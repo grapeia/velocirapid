@@ -90,9 +90,8 @@ const getIps = (req, res) => {
   } else if (ip) {
     result = `IP: ${ip}`;
 
-    if (ip.lenght > 15) {
-      result +="<br/>";
-    }
+    result += ip.lenght > 15? "<br/>" : " - ";
+
 
     let dataInfo = false;
     try {
