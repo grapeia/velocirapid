@@ -7,8 +7,11 @@ const minify = require('html-minifier').minify;
 const jsObfuscate = require('javascript-obfuscator');
 const Geo = require('@maxmind/geoip2-node').Reader;
 const cors = require('cors');
+const http = require('http');
+const https = require('https');
 
-const PORT = process.env.PORT || 5000
+const HTTP_PORT = process.env.HTTP_PORT || 8080
+const HTTPS_PORT = process.env.HTTHTTPS_PORT || 4443
 
 const jsCode = fs.readFileSync('assets/main.js', 'utf8');
 const css = fs.readFileSync('assets/styles.css', 'utf8');
@@ -65,7 +68,7 @@ const getIps = (req, res) => {
     } catch (error) {
       //console.log(error)
     }
-    
+
     return data;
   }
 
@@ -75,7 +78,7 @@ const getIps = (req, res) => {
     req.headers['X-Real-IP'] ||
     req.headers['HTTP_X_FORWARDED_FOR'];
 
-  ip = ip.replace("::ffff:","");
+  ip = ip.replace("::ffff:", "");
 
   let result = "IP and Geolocation / ISP not found or recognized.";
 
@@ -99,21 +102,44 @@ const getIps = (req, res) => {
   res.status(200).send(result);
 }
 
-express()
-  .use(cors({
-    origin: 'velocirapid.com'
-  }))
-  .use(express.static(path.join(__dirname, 'public')))
-  .get('/', (req, res) => {
-    res.status(200).send(minifyHTML || html);
-  })
-  .post('/upload', (req, res) => {
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-    res.set("Cache-Control", "post-check=0, pre-check=0");
-    res.set("Pragma", "no-cache");
-    res.set("Connection", "keep-alive");
+const { key, cert } = await(async () => {
+  const certdir = (fs.readdirSync("/etc/letsencrypt/live"))[0];
 
-    res.status(200).send('Alive');
-  })
-  .get('/getip', getIps)
-  .listen(PORT, () => console.log(`Listening on ${PORT}`))
+  return {
+    key: fs.readFileSync(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
+    cert: fs.readFileSync(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+  }
+})();
+
+const app = express();
+
+app.use(cors({
+  origin: 'velocirapid.com'
+}));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.status(200).send(minifyHTML || html);
+})
+
+app.post('/upload', (req, res) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+  res.set("Cache-Control", "post-check=0, pre-check=0");
+  res.set("Pragma", "no-cache");
+  res.set("Connection", "keep-alive");
+
+  res.status(200).send('Alive');
+});
+
+app.get('/getip', getIps);
+
+app.get('*', (req, res) => {
+  res.redirect('https://' + req.headers.host + req.url);
+});
+
+const httpServer = http.createServer(app).listen(HTTP_PORT);
+const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT)
+  
+
+  
