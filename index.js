@@ -123,6 +123,14 @@ app.use(cors({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect('https://' + req.headers.host + req.url);
+  }
+});
+
 app.get('/', (req, res) => {
   res.status(200).send(minifyHTML || html);
 })
@@ -137,10 +145,6 @@ app.post('/upload', (req, res) => {
 });
 
 app.get('/getip', getIps);
-
-app.get('*', (req, res) => {
-  res.redirect('https://' + req.headers.host + req.url);
-});
 
 try {
   const httpServer = http.createServer(app).listen(HTTP_PORT, () => {
