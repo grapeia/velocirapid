@@ -187,7 +187,6 @@ function ulTest() {
         for (var i = 0; i < r.length; i++) r[i] = Math.random() * maxInt;
     } catch (e) { }
     var req = [];
-    var reqsmall = [];
     for (var i = 0; i < ulTotal; i++) req.push(r);
     const blob = new Blob(req);
 

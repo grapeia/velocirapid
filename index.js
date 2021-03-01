@@ -117,8 +117,6 @@ const cert = fs.readFileSync(`/etc/letsencrypt/live/${URL}/fullchain.pem`);
 
 const app = express();
 
-app.disable('view cache');
-
 app.use(cors({
   origin: URL
 }));
