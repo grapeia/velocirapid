@@ -143,6 +143,7 @@ try {
   });
   const httpsServer = https.createServer({ key, cert }, app).listen(HTTPS_PORT, function() {
     console.log(`Listening on ${HTTPS_PORT}`);
+    alert.sendAlert(`Server started!`);
   });
 } catch (error) {
   console.log(error);
