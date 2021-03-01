@@ -90,19 +90,19 @@ const getIps = (req, res) => {
   } else if (ip) {
     result = `IP: ${ip}`;
 
-    result += ip.length > 15? "<br/>" : " - ";
+    result += ip.length > 15 ? "<br/>" : " - ";
 
     let dataInfo = false;
     try {
       dataInfo = geoHelper(ip);
     } catch (error) {
       dataInfo = false;
-    }   
+    }
 
     if (dataInfo && (dataInfo.isp || dataInfo.city || dataInfo.country)) {
       result += dataInfo.isp ? ` ${dataInfo.isp},` : "";
       result += dataInfo.city ? ` ${dataInfo.city},` : "";
-      result += dataInfo.country? ` ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}` : "";
+      result += dataInfo.country ? ` ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}` : "";
     }
   }
 
