@@ -28,7 +28,7 @@ const cityReader = Geo.openBuffer(cityBuffer);
 const js = ENV ? jsObfuscate.obfuscate(jsCode, {
   splitStrings: true,
   stringArrayEncoding: ["base64"],
-  domainLock: ["http://www.velocirapid.com/", "velocirapid.com", "localhost", "velocirapid.herokuapp.com"]
+  domainLock: [URL]
 }).getObfuscatedCode() : false;
 
 const html = ejs.render(htmlFile, {
@@ -91,7 +91,7 @@ const getIps = (req, res) => {
     result = `IP: ${ip}`;
 
     result += ip.length > 15? "<br/>" : " - ";
-    
+
     let dataInfo = false;
     try {
       dataInfo = geoHelper(ip);
