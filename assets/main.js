@@ -109,7 +109,7 @@ function getPing() {
         }
         pingf.onload = pingcalc;
         pingf.onerror = pingcalc;
-        pingf.open("GET", window.location.pathname + "upload?r=" + getNow(), true);
+        pingf.open("POST", window.location.pathname + "upload?r=" + getNow(), true);
         ping = getNow();
         pingf.send();
     })
