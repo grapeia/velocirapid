@@ -102,7 +102,7 @@ const getIps = (req, res) => {
     if (dataInfo && (dataInfo.isp || dataInfo.city || dataInfo.country)) {
       result += dataInfo.isp ? ` ${dataInfo.isp},` : "";
       result += dataInfo.city ? ` ${dataInfo.city},` : "";
-      result += dataInfo.country ? ` ${dataInfo.country === "BR" ? "Brasil" : "Brasil"}` : "";
+      result += dataInfo.country ? ` ${dataInfo.country}` : "";
     }
   }
 
