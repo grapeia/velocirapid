@@ -1,3 +1,7 @@
 # Velocirapid
 
-A internet measureament web site.
+An internet speed measurement website.
+
+Just for hobby.
+
+https://velocirapid.com
